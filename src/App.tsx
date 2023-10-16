@@ -11,7 +11,7 @@ function App() {
 
   const onSubmit = () => {
     if (info.confirm) {
-      alert(`name: ${info.name}`);
+      window.alert(`name: ${info.name}`);
     }
   };
 

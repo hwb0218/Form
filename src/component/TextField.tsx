@@ -7,8 +7,8 @@ const TextField: React.FC<{
 }> = ({ value, setValue, label }) => {
   return (
     <>
-      {label}
-      <input onChange={(e) => setValue(e.target.value)} value={value} />
+      <label htmlFor="label">{label}</label>
+      <input id="label" onChange={(e) => setValue(e.target.value)} value={value} />
     </>
   );
 };
