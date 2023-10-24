@@ -1,18 +1,17 @@
+import { useContext } from "react";
+
+import { InfoContext } from "../App";
+
 import { Info } from "../types";
 
 type CheckboxFieldProps = {
-  value: Info;
   source: keyof Info;
-  setValue: (info: Info) => void;
   label: string;
 }
 
-const CheckboxField = ({ 
-  label, 
-  source, 
-  value, 
-  setValue 
-  }: CheckboxFieldProps) => {
+const CheckboxField = ({ label, source }: CheckboxFieldProps) => {
+  const { value, setValue } = useContext(InfoContext);
+
   return (
     <>
       {label}
