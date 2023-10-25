@@ -7,6 +7,8 @@
 - Dispatch를 통해 상태 업데이트를 알리며 어떠한 업데이트를 수행해야 하는지 내용을 담은 action object를 전달
 - Reducer는 이전 상태와 action을 받고 이를 통해 새로운 상태를 반환
 
+![useReducer](images/use-reducer.png)
+
 ```jsx
 const initialState = {count: 0};
 
@@ -32,3 +34,8 @@ function Counter() {
   );
 }
 ```
+
+### Reference
+
+[React 공식문서](https://ko.legacy.reactjs.org/docs/hooks-reference.html#usereducer)  
+[유튜브채널 별코딩](https://www.youtube.com/watch?v=tdORpiegLg0&t=1102s)
