@@ -7,3 +7,11 @@
 - 커링은 인자의 순서가 중요하므로, 변동 가능성이 적은 인자는 앞에 변동 가능성이 큰 인자는 뒤에 배치한다.
 
 ![currying](images/currying.jpeg)
+
+```jsx
+const add = (a, b, c) => a + b + c;
+add(1, 2, 3);
+
+const curry = (a) => (b) => (c) => a + b + c;
+curry(1)(2)(3);
+```

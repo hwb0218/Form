@@ -1,21 +1,18 @@
-import { useState, createContext, useReducer } from "react";
+import { createContext, useReducer } from "react";
 
-import TextField from "./component/TextField";
 import Form from "./component/Form";
+import TextField from "./component/TextField";
 import CheckboxField from "./component/CheckboxField";
 
-import { Info } from "./types";
+import { maxLength, minLength } from "./utils/validation";
+
+import { Info, PartialInfo } from "./types";
 
 const defaultInfo: Info = {
   name: "",
+  password: "",
   confirm: false,
 }
-
-type PartialInfo = {
-  [infoKey in keyof Info]: Record<infoKey, Info[infoKey]>
-}[keyof Info];
-
-// type PartialInfo = { name: string } | { confirm: boolean};
 
 export const InfoContext = createContext({
   value: defaultInfo,
@@ -42,8 +39,16 @@ function App() {
     <InfoContext.Provider value={{ value: info, setValue: setInfo }}>
     <Form onSubmit={onSubmit}>
       <TextField
+        type="text"
         source="name"
         label="이름"
+        validate={[minLength(2), maxLength(6)]}
+      />
+      <TextField
+        type="password"
+        source="password"
+        label="패스워드"
+        validate={[minLength(6), maxLength(12)]}
       />
       <CheckboxField
         source="confirm"
