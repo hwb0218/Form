@@ -2,10 +2,10 @@ import { useContext } from "react";
 
 import { InfoContext } from "../App";
 
-import { Info } from "../types";
+import { Source } from "../types";
 
 type CheckboxFieldProps = {
-  source: keyof Info;
+  source: Source<boolean>;
   label: string;
 }
 
@@ -16,7 +16,7 @@ const CheckboxField = ({ label, source }: CheckboxFieldProps) => {
     <>
       {label}
       <input
-        onChange={(e) => setValue({ ...value, [source]: e.target.value })}
+        onChange={(e) => setValue({ [source]: e.target.checked })}
         value={value[source].toString()}
         type={"checkbox"}
       />

@@ -1,10 +1,11 @@
-import React, { useContext }from "react";
+import React, { useContext } from "react";
 
-import { Info } from "../types";
 import { InfoContext } from "../App";
 
+import { Source } from "../types";
+
 const TextField: React.FC<{
-  source: keyof Info;
+  source: Source<string>;
   label: string;
 }> = ({ source, label }) => {
   const { value, setValue } = useContext(InfoContext);
@@ -14,7 +15,7 @@ const TextField: React.FC<{
       <label htmlFor="label">{label}</label>
       <input 
         id="label" 
-        onChange={(e) => setValue({ ...value, [source]: e.target.value})} 
+        onChange={(e) => setValue({ [source]: e.target.value })} 
         value={value[source] as string} 
       />
     </>

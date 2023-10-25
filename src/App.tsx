@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useReducer } from "react";
 
 import TextField from "./component/TextField";
 import Form from "./component/Form";
@@ -11,13 +11,26 @@ const defaultInfo: Info = {
   confirm: false,
 }
 
+type PartialInfo = {
+  [infoKey in keyof Info]: Record<infoKey, Info[infoKey]>
+}[keyof Info];
+
+// type PartialInfo = { name: string } | { confirm: boolean};
+
 export const InfoContext = createContext({
   value: defaultInfo,
-  setValue: (v: Info) => {},
+  setValue: (v: PartialInfo) => {},
 });
 
 function App() {
-  const [info, setInfo] = useState<Info>(defaultInfo);
+  // const [info, setInfo] = useState<Info>(defaultInfo);
+  const [info, setInfo] = useReducer(
+    (prevInfo: Info, partialInfo: PartialInfo) => {
+      return {
+        ...prevInfo,
+        ...partialInfo,
+      };
+  }, defaultInfo);
 
   const onSubmit = () => {
     if (info.confirm) {
