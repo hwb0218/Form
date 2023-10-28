@@ -1,12 +1,12 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 
 import Form from "./component/Form";
 import TextField from "./component/TextField";
 import CheckboxField from "./component/CheckboxField";
 
-import { maxLength, minLength } from "./utils/validation";
+import { checked, maxLength, minLength } from "./utils/validation";
 
-import { Info, PartialInfo } from "./types";
+import { Info, PartialInfo, ErrorInfo, PartialErrorInfo } from "./types";
 
 const defaultInfo: Info = {
   name: "",
@@ -14,13 +14,28 @@ const defaultInfo: Info = {
   confirm: false,
 }
 
-export const InfoContext = createContext({
+const defaultErrorInfo = Object.keys(defaultInfo).reduce((acc, key) => {
+  return {
+    ...acc,
+    [key]: '',
+  } 
+}, {} as ErrorInfo);
+
+export const InfoContext = createContext<{
+  value: Info;
+  setValue: (v: PartialInfo) => void;
+  error: ErrorInfo;
+  setError: (e: PartialErrorInfo) => void;
+}>({
   value: defaultInfo,
-  setValue: (v: PartialInfo) => {},
+  setValue: (v) => {},
+  error: {} as ErrorInfo,
+  setError: (e) => {},
 });
 
 function App() {
-  // const [info, setInfo] = useState<Info>(defaultInfo);
+  const [error, setError] = useState<ErrorInfo>(defaultErrorInfo);
+  
   const [info, setInfo] = useReducer(
     (prevInfo: Info, partialInfo: PartialInfo) => {
       return {
@@ -30,13 +45,18 @@ function App() {
   }, defaultInfo);
 
   const onSubmit = () => {
-    if (info.confirm) {
+    if (Object.values(error).every((err) => err === undefined)) {
       window.alert(`name: ${info.name}`);
     }
   };
 
   return (
-    <InfoContext.Provider value={{ value: info, setValue: setInfo }}>
+    <InfoContext.Provider value={{ 
+      value: info, 
+      setValue: setInfo, 
+      error, 
+      setError: (e) => setError((prevError) => ({ ...prevError, ...e })) 
+    }}>
     <Form onSubmit={onSubmit}>
       <TextField
         type="text"
@@ -51,8 +71,10 @@ function App() {
         validate={[minLength(6), maxLength(12)]}
       />
       <CheckboxField
+        type="checkbox"
         source="confirm"
         label="위 내용이 제출됩니다 동의하십니까?"
+        validate={[checked]}
       />
     </Form>
     </InfoContext.Provider>

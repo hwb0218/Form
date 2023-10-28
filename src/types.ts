@@ -17,5 +17,12 @@ export type Source<T> = {
   [K in keyof Info]: Info[K] extends T ? K : never;
 }[keyof Info];
 
-
 export type InputBaseProps = HTMLInputTypeAttribute;
+
+export type ErrorInfo = {
+  [key in keyof Info]: string | null
+};
+
+export type PartialErrorInfo = {
+  [infoKey in keyof ErrorInfo]: Record<infoKey, ErrorInfo[infoKey]>
+}[keyof ErrorInfo];

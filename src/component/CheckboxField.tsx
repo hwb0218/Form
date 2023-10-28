@@ -1,25 +1,29 @@
-import { useContext } from "react";
+import useInput from "../hooks/useInput";
 
-import { InfoContext } from "../App";
-
-import { Source } from "../types";
+import { InputBaseProps, Source } from "../types";
 
 type CheckboxFieldProps = {
+  type: InputBaseProps;
   source: Source<boolean>;
   label: string;
+  validate: Array<any>
 }
 
-const CheckboxField = ({ label, source }: CheckboxFieldProps) => {
-  const { value, setValue } = useContext(InfoContext);
+const CheckboxField = ({ type, label, source, validate }: CheckboxFieldProps) => {
+  const { error, value, onChange } = useInput<boolean>({
+    source,
+    validate
+  });
 
   return (
     <>
       {label}
       <input
-        onChange={(e) => setValue({ [source]: e.target.checked })}
-        value={value[source].toString()}
-        type={"checkbox"}
+        type={type}      
+        value={value.toString()}
+        onChange={(e) => onChange(e.target.checked)}
       />
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </>
   );
 };

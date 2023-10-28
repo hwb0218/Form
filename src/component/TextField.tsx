@@ -1,8 +1,9 @@
-import { FC, useState, useContext, useEffect } from "react";
+import { FC } from "react";
 
-import { InfoContext } from "../App";
+import useInput from "../hooks/useInput";
 
-import { InputBaseProps, Source, PartialInfo } from "../types";
+import { InputBaseProps, Source } from "../types";
+
 
 const TextField: FC<{
   type: InputBaseProps
@@ -10,18 +11,10 @@ const TextField: FC<{
   label: string;
   validate: any;
 }> = ({ source, label, validate, type }) => {
-  const { value, setValue } = useContext(InfoContext);
-  const [error, setError] = useState<string>('');
-  
-  useEffect(() => {
-    const errors: (string | null)[] = validate.map(
-      (validateFunc: any) => value[source] 
-      ? validateFunc(value[source]) 
-      : null
-    );
-    const err = errors.find((error) => error);
-    setError(err || '');
-  }, [value[source]]);
+  const { error, value, onChange } = useInput<string>({
+    source,
+    validate
+  });
 
   return (
     <>
@@ -29,8 +22,9 @@ const TextField: FC<{
       <input 
         type={type}
         id="label" 
-        onChange={(e) => setValue({ [source]: e.target.value } as PartialInfo)} 
-        value={value[source] as string} 
+        defaultValue={""}
+        value={value} 
+        onChange={(e) => onChange(e.target.value)} 
       />
       {error && <p style={{ color: 'red' }}>{error}</p>}
     </>
